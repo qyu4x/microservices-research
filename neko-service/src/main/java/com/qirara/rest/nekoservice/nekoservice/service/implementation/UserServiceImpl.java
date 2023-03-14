@@ -6,10 +6,9 @@ import com.qirara.rest.nekoservice.nekoservice.payload.request.UserRequest;
 import com.qirara.rest.nekoservice.nekoservice.payload.response.UserResponse;
 import com.qirara.rest.nekoservice.nekoservice.repository.UserRepository;
 import com.qirara.rest.nekoservice.nekoservice.service.UserService;
-import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.base64.Base64Encoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -51,7 +50,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(new String(Base64.getDecoder().decode(id)))
                 .orElseThrow(() -> new DataNotFoundException("Opps, data not found"));
         return new UserResponse(
-                user.getId(),
+                Base64.getEncoder().encodeToString(user.getId().getBytes()),
                 user.getName(),
                 user.getBirthDate(),
                 user.getCreatedAt()

@@ -53,7 +53,7 @@ public class UserController {
 
     }
 
-    @GetMapping(path = "/users")
+    @GetMapping(path = "/user")
     public ResponseEntity<WebResponse<List<UserResponse>>> getAll() {
         List<UserResponse> userResponse = userService.getAll();
         WebResponse<List<UserResponse>> webResponse = new WebResponse<>(
