@@ -3,9 +3,10 @@ package com.qirara.rest.nekoservice.nekoservice.controller;
 import com.qirara.rest.nekoservice.nekoservice.payload.request.UserRequest;
 import com.qirara.rest.nekoservice.nekoservice.payload.response.UserResponse;
 import com.qirara.rest.nekoservice.nekoservice.payload.response.WebResponse;
-import com.qirara.rest.nekoservice.nekoservice.repository.UserRepository;
 import com.qirara.rest.nekoservice.nekoservice.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,14 +14,18 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping(path = "/api/qirara")
 public class UserController {
 
-   private final UserService userService;
+    private final MessageSource messageSource;
 
-    public UserController(UserService userService) {
+    private final UserService userService;
+
+    public UserController(MessageSource messageSource, UserService userService) {
+        this.messageSource = messageSource;
         this.userService = userService;
     }
 
@@ -73,6 +78,19 @@ public class UserController {
                 HttpStatus.OK.value(),
                 HttpStatus.OK.getReasonPhrase(),
                 String.format("User id : %s , is deleted", id)
+        );
+
+        return ResponseEntity.ok().body(webResponse);
+
+    }
+
+    @GetMapping(path = "/user/{name}/locale")
+    public ResponseEntity<WebResponse<String>> hello(@PathVariable String name) {
+        Locale locale = LocaleContextHolder.getLocale();
+        WebResponse<String> webResponse = new WebResponse<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                messageSource.getMessage("good.morning.message", new Object[]{name}, locale)
         );
 
         return ResponseEntity.ok().body(webResponse);
