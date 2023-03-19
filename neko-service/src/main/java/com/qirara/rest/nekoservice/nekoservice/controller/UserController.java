@@ -1,5 +1,6 @@
 package com.qirara.rest.nekoservice.nekoservice.controller;
 
+import com.qirara.rest.nekoservice.nekoservice.entity.User;
 import com.qirara.rest.nekoservice.nekoservice.payload.request.UserRequest;
 import com.qirara.rest.nekoservice.nekoservice.payload.response.UserResponse;
 import com.qirara.rest.nekoservice.nekoservice.payload.response.WebResponse;
@@ -7,12 +8,16 @@ import com.qirara.rest.nekoservice.nekoservice.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -30,17 +35,22 @@ public class UserController {
     }
 
     @PostMapping(path = "/user")
-    public ResponseEntity<WebResponse<UserResponse>> save(@Valid @RequestBody UserRequest userRequest) {
+    public ResponseEntity<WebResponse<EntityModel<UserResponse>>> save(@Valid @RequestBody UserRequest userRequest) {
         UserResponse userResponse = userService.save(userRequest);
-        WebResponse<UserResponse> webResponse = new WebResponse<>(
-                HttpStatus.CREATED.value(),
-                HttpStatus.CREATED.getReasonPhrase(),
-                userResponse
-        );
 
         URI URI = ServletUriComponentsBuilder.fromCurrentRequestUri()
                 .path("/{id}").buildAndExpand(userResponse.getId()).toUri();
 
+        // hateoas
+        Link link = WebMvcLinkBuilder
+                .linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).get(userResponse.getId())).withRel("user-detail");
+
+        EntityModel<UserResponse> entityModel = EntityModel.of(userResponse, link);
+        WebResponse<EntityModel<UserResponse>> webResponse = new WebResponse<>(
+                HttpStatus.CREATED.value(),
+                HttpStatus.CREATED.getReasonPhrase(),
+                entityModel
+        );
         return ResponseEntity.created(URI).body(webResponse);
 
     }
@@ -59,14 +69,25 @@ public class UserController {
     }
 
     @GetMapping(path = "/user")
-    public ResponseEntity<WebResponse<List<UserResponse>>> getAll() {
-        List<UserResponse> userResponse = userService.getAll();
-        WebResponse<List<UserResponse>> webResponse = new WebResponse<>(
+    public ResponseEntity<WebResponse<List<EntityModel<UserResponse>>>> getAll() {
+
+        List<UserResponse> userResponses = userService.getAll();
+
+        // hateoas in list data
+        List<EntityModel<UserResponse>> entityModels = new ArrayList<>();
+        for (UserResponse userResponse : userResponses) {
+            Link link = WebMvcLinkBuilder
+                    .linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).get(userResponse.getId())).withRel("user-detail");
+
+            EntityModel<UserResponse> userResponseEntityModel = EntityModel.of(userResponse, link);
+            entityModels.add(userResponseEntityModel);
+        }
+
+        WebResponse<List<EntityModel<UserResponse>>> webResponse = new WebResponse<>(
                 HttpStatus.OK.value(),
                 HttpStatus.OK.getReasonPhrase(),
-                userResponse
+                entityModels
         );
-
         return ResponseEntity.ok().body(webResponse);
 
     }

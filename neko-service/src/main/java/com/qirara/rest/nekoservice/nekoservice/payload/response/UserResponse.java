@@ -1,5 +1,7 @@
 package com.qirara.rest.nekoservice.nekoservice.payload.response;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
