@@ -1,6 +1,5 @@
 package com.qirara.rest.nekoservice.nekoservice.controller;
 
-import com.qirara.rest.nekoservice.nekoservice.entity.User;
 import com.qirara.rest.nekoservice.nekoservice.payload.request.UserRequest;
 import com.qirara.rest.nekoservice.nekoservice.payload.response.UserResponse;
 import com.qirara.rest.nekoservice.nekoservice.payload.response.WebResponse;
