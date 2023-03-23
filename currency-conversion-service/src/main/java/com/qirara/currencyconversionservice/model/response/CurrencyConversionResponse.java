@@ -1,5 +1,8 @@
 package com.qirara.currencyconversionservice.model.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 public class CurrencyConversionResponse {
@@ -9,7 +12,7 @@ public class CurrencyConversionResponse {
 
     private String to;
 
-    private Integer quantity;
+    private BigDecimal quantity;
 
     private BigDecimal currencyMultiple;
 
@@ -17,7 +20,10 @@ public class CurrencyConversionResponse {
 
     private String environment;
 
-    public CurrencyConversionResponse(String id, String from, String to, Integer quantity, BigDecimal currencyMultiple, BigDecimal currencyConversion, String environment) {
+    public CurrencyConversionResponse() {
+    }
+
+    public CurrencyConversionResponse(String id, String from, String to, BigDecimal quantity, BigDecimal currencyMultiple, BigDecimal currencyConversion, String environment) {
         this.id = id;
         this.from = from;
         this.to = to;
@@ -51,11 +57,11 @@ public class CurrencyConversionResponse {
         this.to = to;
     }
 
-    public Integer getQuantity() {
+    public BigDecimal getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
     }
 

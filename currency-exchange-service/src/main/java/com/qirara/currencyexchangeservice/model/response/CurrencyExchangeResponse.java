@@ -14,6 +14,9 @@ public class CurrencyExchangeResponse {
 
     private String environment;
 
+    public CurrencyExchangeResponse() {
+    }
+
     public CurrencyExchangeResponse(String id, String from, String to, BigDecimal currencyMultiple) {
         this.id = id;
         this.from = from;

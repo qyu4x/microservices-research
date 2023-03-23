@@ -27,7 +27,7 @@ public class CurrencyExchangeController {
     }
 
     @GetMapping(path = "/currency-exchange/from/{from}/to/{to}")
-    private ResponseEntity<WebResponse<CurrencyExchangeResponse>> retrieveCurrencyExchange(@PathVariable String from, @PathVariable String to) {
+    private ResponseEntity<CurrencyExchangeResponse> retrieveCurrencyExchange(@PathVariable String from, @PathVariable String to) {
         String port = environment.getProperty("local.server.port");
         String service = environment.getProperty("spring.application.name");
 
@@ -35,11 +35,7 @@ public class CurrencyExchangeController {
         currencyExchangeResponse.setEnvironment(service.concat("-").concat(port));
 
 
-        return ResponseEntity.ok(new WebResponse<>(
-                HttpStatus.OK.value(),
-                HttpStatus.OK.getReasonPhrase(),
-                currencyExchangeResponse
-        ));
+        return ResponseEntity.ok(currencyExchangeResponse);
     }
 
 }

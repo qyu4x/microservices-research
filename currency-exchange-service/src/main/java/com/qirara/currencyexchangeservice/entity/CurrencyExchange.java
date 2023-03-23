@@ -21,6 +21,16 @@ public class CurrencyExchange {
 
     private BigDecimal currencyMultiple;
 
+    public CurrencyExchange() {
+    }
+
+    public CurrencyExchange(String id, String from, String to, BigDecimal currencyMultiple) {
+        this.id = id;
+        this.from = from;
+        this.to = to;
+        this.currencyMultiple = currencyMultiple;
+    }
+
     public String getId() {
         return id;
     }
