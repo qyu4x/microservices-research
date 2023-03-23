@@ -1,8 +1,8 @@
-package com.qirara.currencyexchangeservice.model.request;
+package com.qirara.currencyexchangeservice.model.response;
 
 import java.math.BigDecimal;
 
-public class CurrencyExchange {
+public class CurrencyExchangeResponse {
 
     private String id;
 
@@ -14,7 +14,7 @@ public class CurrencyExchange {
 
     private String environment;
 
-    public CurrencyExchange(String id, String from, String to, BigDecimal currencyMultiple) {
+    public CurrencyExchangeResponse(String id, String from, String to, BigDecimal currencyMultiple) {
         this.id = id;
         this.from = from;
         this.to = to;
