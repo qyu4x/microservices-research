@@ -26,7 +26,7 @@ public class CurrencyExchangeController {
         this.currencyExchangeService = currencyExchangeService;
     }
 
-    @GetMapping(path = "/currency-exchange/from/{from}/to/{to}")
+    @GetMapping(path = "/currency-exchange/from/{from}/to/{to}", produces = "application/json")
     private ResponseEntity<CurrencyExchangeResponse> retrieveCurrencyExchange(@PathVariable String from, @PathVariable String to) {
         String port = environment.getProperty("local.server.port");
         String service = environment.getProperty("spring.application.name");
