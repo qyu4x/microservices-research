@@ -38,4 +38,9 @@ public class CurrencyExchangeController {
         return ResponseEntity.ok(currencyExchangeResponse);
     }
 
+    @GetMapping(path = "/currency-exchange/hello")
+    private String testHello() {
+        return "Hello world";
+    }
+
 }
